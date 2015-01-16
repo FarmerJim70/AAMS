@@ -124,7 +124,6 @@ Public Function purgeAsteroids (ByVal AsteroidLocation)
 	x = 0
 	Set objDirectory = objFSO.GetFolder(AsteroidLocation)
 	For Each file in objDirectory.Files
-		'logStream.writeline Date & " - " & Time & " -> File deleted: " & file.Name
 		purgeLog.writeline Date & " - " & Time & " -> File deleted: " & file.Name
 		file.Delete
 		x = x + 1
