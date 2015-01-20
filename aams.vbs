@@ -5,7 +5,7 @@
 logFile = "aams.log"
 configFile = "aams.config"
 lastrunFile = "aams.tmp"
-purgeFile = "aams.purge."
+purgeFile = "aams_purge."
 
 ' open log
 Set objFSO = CreateObject("Scripting.FileSystemObject")
@@ -108,7 +108,7 @@ Public Function purgeAsteroids (ByVal AsteroidLocation)
 	
 	' open purge log
 
-	purgeLogFile = purgeFile & Day(Date()) & MonthName(Month(Date())) & Year(Date())
+	purgeLogFile = purgeFile & Day(Date()) & MonthName(Month(Date())) & Year(Date()) & ".log"
 
 	logStream.writeline Date & " - " & Time & " -> Creating Purge Log: " & purgeLogFile
 
@@ -124,9 +124,13 @@ Public Function purgeAsteroids (ByVal AsteroidLocation)
 	x = 0
 	Set objDirectory = objFSO.GetFolder(AsteroidLocation)
 	For Each file in objDirectory.Files
-		purgeLog.writeline Date & " - " & Time & " -> File deleted: " & file.Name
-		file.Delete
-		x = x + 1
+		if objFSO.getExtensionName(file.Path) = "vx2" Then
+			purgeLog.writeline Date & " - " & Time & " -> File deleted: " & file.Name
+			file.Delete
+			x = x + 1
+		else
+			wscript.echo "Found non vx2 file extension, skipping."
+		end if
 	Next
 	
 	logStream.writeline Date & " - " & Time & " -> Purged Asteroids: " & x
