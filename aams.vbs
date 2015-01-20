@@ -106,9 +106,16 @@ Public Function purgeAsteroids (ByVal AsteroidLocation)
 	logStream.writeline Date & " - " & Time & " -> Using Asteroid File Location of: " & AsteroidLocation
 	logStream.writeline Date & " - " & Time & " -> Purging Asteroids..."
 	
+	' check if purge log dir exists, if not will create
+	
+	if NOT objFSO.FolderExists("PurgeLogs") Then
+		objFSO.CreateFolder("PurgeLogs")
+		logStream.writeline Date & " - " & Time & " -> Created Purge Log Directory."
+	End if
+	
 	' open purge log
 
-	purgeLogFile = purgeFile & Day(Date()) & MonthName(Month(Date())) & Year(Date()) & ".log"
+	purgeLogFile = "PurgeLogs\" & purgeFile & Day(Date()) & MonthName(Month(Date())) & Year(Date()) & ".log"
 
 	logStream.writeline Date & " - " & Time & " -> Creating Purge Log: " & purgeLogFile
 
